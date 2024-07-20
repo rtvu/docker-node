@@ -1,0 +1,27 @@
+name: 'On Push Dockerfile'
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'Dockerfile'
+  workflow_dispatch:
+
+jobs:
+  on-push-dockerfile:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: 'Checkout repository'
+        uses: actions/checkout@v4
+      -
+        name: 'Build and push image'
+        uses: rtvu/build-and-push-to-docker-hub-action@v2
+        with:
+          image: ${{ vars.IMAGE }}
+          latest: true
+          platforms: ${{ vars.PLATFORMS }}
+          tags: ${{ vars.TAGS }}
+          token: ${{ secrets.DOCKER_HUB_TOKEN }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
